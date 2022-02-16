@@ -1,4 +1,4 @@
-var map = L.map('map').setView([51.505, -0.09], 13);                                                    //Creates the map.  A unique Mapbox token is required to initialize the map.
+var map = L.map('map').setView([47.410552, -122.399484], 7);                                                    //Creates the map.  A unique Mapbox token is required to initialize the map.
 L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
   attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
   maxZoom: 18,
@@ -26,73 +26,43 @@ new L.Control.Draw({
 function createFormPopup() {     //Create a form pop-up with the following information (The content inside the form is written in HTML).
     var popupContent =
     '<form>' +
-    'Size of tracks (if applicable):' +
-    '<fieldset>' +
-      '<p>' +
-          '<input type="radio" id="Size_Tracks_Less" name="Size_Tracks" value="Less">' +
-          '<label for="Size_Tracks_Less">Less than 2.5 inches long</label>' +
-      '</p>' +
-      '<p>' +
-          '<input type="radio" id="Size_Tracks_About" name="Size_Tracks" value="About">' +
-          '<label for="Size_Tracks_About">About 2.5 inches long</label>' +
-      '</p>' +
-      '<p>' +
-        '<label for="Size_Tracks">' +
-          '<input type="radio" id="Size_Tracks_Greater" name="Size_Tracks" value="Greater">' +
-        '<label for="Size_Tracks_Greater">Greater than 2.5 inches long</label>' +
-      '</p>' +
-    '</fieldset>' +
-    'Fisher fur in hair snare? (Scientists only):' +
-    '<fieldset>' +
-      '<p>' +
-          '<input type="radio" id="Fur_Snare_Yes" name="Fur_Snare" value="Yes">' +
-          '<label for="Fur_Snare_Yes">Yes</label>' +
-      '</p>' +
-      '<p>' +
-          '<input type="radio" id="Fur_Snare_No" name="Fur_Snare" value="No">' +
-          '<label for="Fur_Snare_No">No</label>' +
-      '</p>' +
-      '<p>' +
-          '<input type="radio" id="Fur_Snare_Other" name="Fur_Snare" value="Other">' +
-          '<label for="Fur_Snare_Other">Fur other than Fisher (Enter name of animal here):<input type="text" id="input_animal"></label>' +
-      '</p>' +
-    '</fieldset>' +
-    'Shape of scat (if applicable):' +
-    '<fieldset>' +
-      '<p>'
-          '<input type="radio" id="Shape_Scat_Tap" name="Shape_Scat" value="Tapered">' +
-          '<label for="Shape_Scat_Tap">Tapered at one end</label>' +
-      '</p>' +
-      '<p>' +
-          '<input type="radio" id="Shape_Scat_Not_Tap" name="Shape_Scat" value="Not_Tapered">' +
-          '<label for="Shape_Scat_Not_Tap">Not tapered at one end</label>' +
-      '</p>' +
-    '</fieldset>' +
-    'Size of scat (if applicable):' +
-    '<fieldset>' +
-      '<p>' +
-          '<input type="radio" id="Size_Scat_Less" name="Size_Scat" value="Less">' +
-          '<label for="Size_Scat_Less">Less than 3/8 of an inch in width</label>' +
-      '</p>' +
-      '<p>' +
-          '<input type="radio" id="Size_Scat_Between" name="Size_Scat" value="Between">' +
-          '<label for="Size_Scat_Between">Between 3/8 inch and 5/8 inch in width</label>' +
-      '</p>' +
-      '<p>' +
-          '<input type="radio" id="Size_Scat_Greater" name="title" value="Greater">' +
-          '<label for="Size_Scat_Greater">Greater than 5/8 of an inch in width</label>' +
-      '</p>' +
-    '</fieldset>' +
-    'Photo(s) of the tracks, scat, or other signs:' +
-    '<br><input type="file" id="Photo" name= "Photo" accept="image/png", "image/jpeg"><br>' +
+          '<label for="size_tracks">Size of Tracks (if applicable):</label><br>' +
+          '<select id="size_tracks" name="size_tracks">' +
+             '<option value="NA"></option>' +
+             '<option value="Less than 2.5 inches long">Less than 2.5 inches long</option>' +
+             '<option value="About 2.5 inches long">About 2.5 inches long</option>' +
+             '<option value="Greater than 2.5 inches long">Greater than 2.5 inches long</option>' +
+          '</select><br>' +
+          '<label for="fur_snare">Fisher fur in hair snare? (If you are not a scientist, leave blank)</label><br>' +  //Source for Hair Snare: https://www.fs.fed.us/rm/wildlife-terrestrial/docs/genetics/reports-protocols/Fisher_Survey_Protocol.pdf
+          '<select id="fur_snare" name="fur_snare">' +
+             '<option value="NA"></option>' +
+             '<option value="Yes">Yes</option>' +
+             '<option value="No">No</option>' +
+             '<option value="Other_Fur">Other Fur</option>' +
+          '</select><br>' +
+          'If you answered "Other Fur" to the question above, type the name of the animal the fur belongs to below (If you are not a scientist, write "NA" in the text box below):<input type="text" id="description_other_fur">' +
+          '</label><br>' +
+          '<label for="shape_scat">Shape of scat (if applicable):</label><br>' +
+          '<select id="shape_scat" name="shape_scat">' +
+             '<option value="NA"></option>' +
+             '<option value="Tapered at one end">Tapered at one end</option>' +
+             '<option value="Not tapered at one end">Not tapered at one end</option>' +
+          '</select><br>' +
+          '<label for="size_scat">Size of scat (if applicable):</label><br>' +
+          '<select id="size_scat" name="size_scat">' +
+             '<option value="NA"></option>' +
+             '<option value="Less than 3/8 of an inch in width">Less than 3/8 of an inch in width</option>' +
+             '<option value="Between 3/8 inch and 5/8 inch in width">Between 3/8 inch and 5/8 inch in width</option>' +
+             '<option value="Greater than 5/8 of an inch in width">Greater than 5/8 of an inch in width</option>' +
+          '</select><br>' +
     'Describe the location of the sign(s) (Type of surrounding vegetation, nearby land features, open or closed canopy, etc.):<br><input type="text" id="input_desc"><br>' +
-    'Date sign was observed:<br><input type="datetime-local" id="Observation_time"' +
+    'Date sign was observed:<br><input type="datetime-local" id="observation_time"' +
            'name="Observation_time" value="2022-02-14T15:30"' +
            'min="2022-02-14T15:30" max="2200-02-14T15:30"> <br></input>' +
-    'Your Name, Nickname, or Alias (If you are filling out multiple forms, please use the same name, nickname, or alias for each form):<br><input type="text" id="input_name"><br>' +
-    '<input type="button" value="Submit" id="submit">' +
+    'Enter your name, nickname, or alias (If you are filling out multiple forms, please use the same name, nickname, or alias for each form):<br><input type="text" id="input_name"><br>' +
+    '<center><input type="button" value="Submit" id="submit"></center>' +
     '</form>'
-    drawnItems.bindPopup(popupContent).openPopup();
+    drawnItems.bindPopup(popupContent, {maxHeight:340, minWidth:900}).openPopup();
 }
 
 map.addEventListener("draw:created", function(e) {    //This is the event listener that is activated when a new feature has been drawn on the map (point, line, or polygon).  This event listener adds this feature to the layers "items" that have already been drawn and also causes the createFormPopup function to run: When a layer is created (point, line, or polygon) add and open a pop-up.
@@ -102,12 +72,24 @@ map.addEventListener("draw:created", function(e) {    //This is the event listen
 
 function setData(e) {
   if(e.target && e.target.id == "submit") {     //When you hit the submit button on a pop-up...
-    // Get user name and description
-    var enteredUsername = document.getElementById("input_name").value;
-    var enteredDescription = document.getElementById("input_desc").value;
-    //print user name and description
-    console.log(enteredUsername);
-    console.log(enteredDescription);
+    // Get the values of the questions/variables
+    var size_tracks = document.getElementById("size_tracks").value;
+    var fur_snare = document.getElementById("fur_snare").value;
+    var description_other_fur = document.getElementById("description_other_fur").value;
+    var shape_scat = document.getElementById("shape_scat").value;
+    var size_scat = document.getElementById("size_scat").value;
+    var description = document.getElementById("input_desc").value;
+    var observation_time = document.getElementById("observation_time").value;
+    var name = document.getElementById("input_name").value;
+    //prints the value of the questions/variables in the Google Chrome console
+    console.log(size_tracks);
+    console.log(fur_snare);
+    console.log(description_other_fur);
+    console.log(shape_scat);
+    console.log(size_scat);
+    console.log(description);
+    console.log(observation_time);
+    console.log(name);
     //Get and print GeoJSON for each drawn layer
     drawnItems.eachLayer(function(layer) {
       var drawing = JSON.stringify(layer.toGeoJSON().geometry);
@@ -121,17 +103,17 @@ function setData(e) {
 
 document.addEventListener("click", setData);          //This is an event listener that references the function setData from above.  It is attached to the document because the document is always present, unlike the pop-up which closes and opens at the whim of the user (If the event listener was bound to the pop-up it would need to be re-instated each time a pop-up opened).
 
-map.addEventListener("draw:editstart", function(e) {      //The following lines of code add event listeners that activate when an edit session has been opened or closed or when a delete session has been opened or closed.  These event listeners prevent the pop-ups from displaying during the editing and deletion sessions and open the pop-ups back up when the sessions are done.  If all of the shapes have been deleted, the pop-up will not appear again.
-  drawnItems.closePopup();
-});
-map.addEventListener("draw:deletestart", function(e) {
-  drawnItems.closePopup();
-});
-map.addEventListener("draw:editstop", function(e) {
-  drawnItems.openPopup();
-});
-map.addEventListener("draw:deletestop", function(e) {
-  if(drawnItems.getLayers().length > 0) {
-    drawnItems.openPopup();
-  }
-});
+    map.addEventListener("draw:editstart", function(e) {      //The following lines of code add event listeners that activate when an edit session has been opened or closed or when a delete session has been opened or closed.  These event listeners prevent the pop-ups from displaying during the editing and deletion sessions and open the pop-ups back up when the sessions are done.  If all of the shapes have been deleted, the pop-up will not appear again.
+      drawnItems.closePopup();
+    });
+    map.addEventListener("draw:deletestart", function(e) {
+      drawnItems.closePopup();
+    });
+    map.addEventListener("draw:editstop", function(e) {
+      drawnItems.openPopup();
+    });
+    map.addEventListener("draw:deletestop", function(e) {
+      if(drawnItems.getLayers().length > 0) {
+        drawnItems.openPopup();
+      }
+    });
